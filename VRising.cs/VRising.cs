@@ -47,7 +47,7 @@ namespace WindowsGSM.Plugins
         public string QueryPort = "9877"; // UDP port for Steam server list features
         public string Defaultmap = "world1"; // Name of save file/directory
         public string Maxplayers = "10"; // Max number of concurrent players on server
-        public string Additional = "-maxConnectedAdmins 4 -persistentDataPath \".\save-data\""; // Additional server start parameter
+        public string Additional = "-maxConnectedAdmins 4 -persistentDataPath \"\save-data\""; // Additional server start parameter
 
 
         // - Create a default cfg for the game server after installation
