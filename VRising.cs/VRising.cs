@@ -11,43 +11,43 @@ using System.Collections.Generic;
 
 namespace WindowsGSM.Plugins
 {
-    public class Valheim : SteamCMDAgent
+    public class VRising : SteamCMDAgent
     {
         // - Plugin Details
         public Plugin Plugin = new Plugin
         {
-            name = "WindowsGSM.Valheim", // WindowsGSM.XXXX
+            name = "WindowsGSM.VRising", // WindowsGSM.XXXX
             author = "Sarpendon",
-            description = "WindowsGSM plugin for supporting Valheim Dedicated Server",
+            description = "WindowsGSM plugin for supporting VRising Dedicated Server",
             version = "1.1",
-            url = "https://github.com/Sarpendon/WindowsGSM.Valheim", // Github repository link (Best practice)
+            url = "https://github.com/Sarpendon/WindowsGSM.VRising", // Github repository link (Best practice)
             color = "#8802db" // Color Hex
         };
 
         // - Settings properties for SteamCMD installer
         public override bool loginAnonymous => true;
-        public override string AppId => "896660"; // Game server appId
+        public override string AppId => "1829350"; // Game server appId
 
         // - Standard Constructor and properties
-        public Valheim(ServerConfig serverData) : base(serverData) => base.serverData = _serverData = serverData;
+        public VRising(ServerConfig serverData) : base(serverData) => base.serverData = _serverData = serverData;
         private readonly ServerConfig _serverData;
         public string Error, Notice;
 
 
         // - Game server Fixed variables
-        public override string StartPath => @"valheim_server.exe"; // Game server start path
-        public string FullName = "Valheim Dedicated Server"; // Game server FullName
-        public bool AllowsEmbedConsole = true;  // Does this server support output redirect?
+        public override string StartPath => @"VRisingServer.exe"; // Game server start path
+        public string FullName = "VRising Dedicated Server"; // Game server FullName
+        public bool AllowsEmbedConsole = false;  // Does this server support output redirect?
         public int PortIncrements = 2; // This tells WindowsGSM how many ports should skip after installation
         public object QueryMethod = new A2S(); // Query method should be use on current server type. Accepted value: null or new A2S() or new FIVEM() or new UT3()
 
 
         // - Game server default values
-        public string Port = "2456"; // Default port
-        public string QueryPort = "2457"; // Default query port
-        public string Defaultmap = "MapSeed"; // Used for Server ID
-        public string Maxplayers = "4"; // Default maxplayers
-        public string Additional = "-password \"123456\" -crossplay -saveinterval 1800 -backups 4 -backupshort 7200 -backuplong 43200"; // Additional server start parameter
+        public string Port = "9876"; // UDP port for game traffic, TCP for rcon traffic
+        public string QueryPort = "9877"; // UDP port for Steam server list features
+        public string Defaultmap = "world1"; // Name of save file/directory
+        public string Maxplayers = "10"; // Max number of concurrent players on server
+        public string Additional = "-maxConnectedAdmins 4 -persistentDataPath \".\save-data\""; // Additional server start parameter
 
 
         // - Create a default cfg for the game server after installation
@@ -64,10 +64,14 @@ namespace WindowsGSM.Plugins
             string shipExePath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, StartPath);
 
             // Prepare start parameter
-			string param = $"-nographics -batchmode -public 1"; // Set basic parameters
-			param += string.IsNullOrWhiteSpace(_serverData.ServerName) ? string.Empty : $" -name \"{_serverData.ServerName}\"";
-			param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $" -port {_serverData.ServerPort}"; 
-			param += string.IsNullOrWhiteSpace(_serverData.ServerMap) ? string.Empty : $" -world \"{_serverData.ServerMap}\"";
+			string param = $""; // Set basic parameters
+			param += string.IsNullOrWhiteSpace(_serverData.ServerMap) ? string.Empty : $"-saveName \"{_serverData.ServerMap}\"";
+			param += string.IsNullOrWhiteSpace(_serverData.ServerIP) ? string.Empty : $" -address \"{_serverData.ServerIP}\"";
+			param += string.IsNullOrWhiteSpace(_serverData.ServerName) ? string.Empty : $" -serverName \"{_serverData.ServerName}\"";
+			param += string.IsNullOrWhiteSpace(_serverData.ServerGSLT) ? string.Empty : $" -PrivateServerPassword={_serverData.ServerGSLT}";
+			param += string.IsNullOrWhiteSpace(_serverData.ServerMaxPlayer) ? string.Empty : $" -maxConnectedUsers {_serverData.ServerMaxPlayer}";
+			param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $" -gamePort {_serverData.ServerPort}"; 
+			param += string.IsNullOrWhiteSpace(_serverData.ServerQueryPort) ? string.Empty : $" -queryPort {_serverData.ServerQueryPort}";
 			param += string.IsNullOrWhiteSpace(_serverData.ServerParam) ? string.Empty : $" {_serverData.ServerParam}";
 
 
