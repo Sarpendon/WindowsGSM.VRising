@@ -1,5 +1,5 @@
 # WindowsGSM.VRising
- 🧩WindowsGSM plugin that provides Satisfactory Dedicated server
+ 🧩WindowsGSM plugin that provides V Rising Dedicated server
  
  🏷️ To be used with https://windowsgsm.com/ 
 
