@@ -45,7 +45,7 @@
 
 
 > [!NOTE]
->For more Settings use the Valheim Dedicated Server Manual, you can find it as PDF in the Server directory!
+>For more Settings check this link: https://cdn.stunlock.com/blog/2022/05/25083113/Game-Server-Settings.pdf
 
 # Other WinGSM Plugins:
 | Icon | Game Name | Link | Version |
