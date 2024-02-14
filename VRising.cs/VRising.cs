@@ -18,8 +18,8 @@ namespace WindowsGSM.Plugins
         {
             name = "WindowsGSM.VRising",
             author = "Sarpendon",
-            description = "WindowsGSM plugin for supporting VRising Dedicated Server",
-            version = "1.1",
+            description = "WindowsGSM plugin for supporting V Rising Dedicated Server",
+            version = "1.0",
             url = "https://github.com/Sarpendon/WindowsGSM.VRising",
             color = "#8802db"
         };
@@ -35,7 +35,7 @@ namespace WindowsGSM.Plugins
 
         // - Game server Fixed variables
         public override string StartPath => @"VRisingServer.exe";
-        public string FullName = "VRising Dedicated Server";
+        public string FullName = "V Rising Dedicated Server";
         public bool AllowsEmbedConsole = false;
         public int PortIncrements = 2;
         public object QueryMethod = new A2S();
