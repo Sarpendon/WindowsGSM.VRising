@@ -28,7 +28,10 @@
 >- **Server IP Adress:** *Local IP of your Server there is no need to change this GSM should get the right IP adress itself*
 >- **Server Port:** *UDP port for game traffic, TCP for rcon traffic*
 >- **Server Query Port:** *UDP port for Steam server list features*
->- **Server Maxplayer:** *Max number of concurrent players on server*
+>- **Server Maxplayer:** *Max number of concurrent players on server (passed as `-maxUsers`)*
+>- **Server GSLT:** *Server password. Leave empty for a server without a password. Passed as
+>  `-password`; before plugin version 1.1 this field was sent under a parameter V Rising does not
+>  have, so it had no effect.*
 >- **Server Start Map:** *Name of save file/directory*
 >- **Server Start Param:** *Some Parameter are already filled in by default you can add or remove them as you wish! 
 
@@ -39,7 +42,7 @@
 # Other Server Settings:
 | Server Start Param| Description |
 | --- | --- | 
-| `-maxConnectedAdmins` | Max number of admins to allow connect even when server is full. |
+| `-maxAdmins` | Max number of admins to allow connect even when server is full. Was `-maxConnectedAdmins` before V Rising 1.0; the old spelling is ignored by current servers. |
 | `-persistentDataPath` | Absolute or relative path to where Settings and Save files are held. | 
 
 
@@ -47,11 +50,34 @@
 > [!NOTE]
 >For more Settings check this link: https://cdn.stunlock.com/blog/2022/05/25083113/Game-Server-Settings.pdf
 
+# Changelog:
+### 1.1
+- **The server password works now.** The plugin passed `-PrivateServerPassword`, which is an Unreal
+  parameter carried over from the Myth of Empires plugin - V Rising has no such option and ignored
+  it, so anything entered in the **Server GSLT** field never became a password. It now uses the
+  documented `-password`.
+- **The player limit works now.** `-maxConnectedUsers` / `-maxConnectedAdmins` are the 0.6.x
+  spellings; V Rising 1.0 renamed them to `-maxUsers` / `-maxAdmins`, so the limit was ignored.
+  The default Start Parameters are updated accordingly - existing servers should change
+  `-maxConnectedAdmins` to `-maxAdmins` by hand.
+- **Stopping the server now reaches it.** The stop signal was sent to the server's window with
+  SendKeys, but WindowsGSM hides that window right after starting the server - so the keystroke
+  went to whatever window happened to have focus on the machine, never to the server. Every stop
+  ran into the timeout and ended in a hard kill. The signal is now raised on the server's own
+  console, so it shuts down properly instead of being killed.
+- The shutdown output stays readable for a few seconds instead of being cleared instantly.
+- **Failed installs and updates now say why.** The reason was being swallowed and shown as an
+  empty `[ERROR]`; a failed update additionally crashed with a `NullReferenceException`.
+- **Importing an existing server works.** It was looking for `PackageInfo.bin`, a file this game
+  does not ship, so the import always failed.
+- A missing server executable is reported as such instead of a generic Windows error.
+- Console output is read as UTF-8, so umlauts and other non-ASCII characters are no longer mangled.
+
 # Other WinGSM Plugins:
 | Icon | Game Name | Link | Version |
 | --- | --- | --- | --- |
-| <img src="https://i.imgur.com/LI1uPIJ.png" width="100" height="100"> | Myth of Empires Dedicated Server | [GitHub Link](https://github.com/Sarpendon/WindowsGSM.MythofEmpires) | 1.9 |
-| <img src="https://i.imgur.com/25x4Ohs.png" width="100" height="100"> | Valheim Dedicated Server | [GitHub Link](https://github.com/Sarpendon/WindowsGSM.Valheim) | 1.1 |
-| <img src="https://i.imgur.com/A9jtLPQ.png" width="100" height="100"> | V Rising Dedicated Server | [GitHub Link](https://github.com/Sarpendon/WindowsGSM.VRising) | 1.0 |
-| <img src="https://i.imgur.com/A6dCSy9.png" width="100" height="100"> | Life is Feudal Dedicated Server | [GitHub Link](https://github.com/Sarpendon/WindowsGSM.LifeIsFeudal) | 1.0 |
+| <img src="https://i.imgur.com/LI1uPIJ.png" width="100" height="100"> | Myth of Empires Dedicated Server | [GitHub Link](https://github.com/Sarpendon/WindowsGSM.MythofEmpires) | 2.0 |
+| <img src="https://i.imgur.com/25x4Ohs.png" width="100" height="100"> | Valheim Dedicated Server | [GitHub Link](https://github.com/Sarpendon/WindowsGSM.Valheim) | 1.2 |
+| <img src="https://i.imgur.com/A9jtLPQ.png" width="100" height="100"> | V Rising Dedicated Server | [GitHub Link](https://github.com/Sarpendon/WindowsGSM.VRising) | 1.1 |
+| <img src="https://i.imgur.com/A6dCSy9.png" width="100" height="100"> | Life is Feudal Dedicated Server | [GitHub Link](https://github.com/Sarpendon/WindowsGSM.LifeIsFeudal) | 1.2 |
 
